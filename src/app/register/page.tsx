@@ -11,6 +11,8 @@ import { useState } from 'react';
 import ImageUploading, { ImageListType } from 'react-images-uploading';
 import toast from 'react-hot-toast';
 import axios from "axios"
+import { useCreateUser } from './api/rote';
+import { SyncLoader } from 'react-spinners';
 const LottiePlayer = dynamic(() => import('@lottiefiles/react-lottie-player').then((mod) => mod.Player), { ssr: false });
 type Inputs = {
     name: string,
@@ -21,6 +23,8 @@ type Inputs = {
 
 
 const Register = () => {
+    const { mutateAsync, isPending, } = useCreateUser();
+    console.log(isPending)
     const [showPassword, setShowPassword] = useState(false);
     const [images, setImages] = useState<ImageListType>([]);
     const {
@@ -29,26 +33,26 @@ const Register = () => {
         reset,
         formState: { errors },
     } = useForm<Inputs>();
-    //read the image
-    const readFileAsBase64 = (file: File): Promise<string> => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
+    // //read the image
+    // const readFileAsBase64 = (file: File): Promise<string> => {
+    //     return new Promise((resolve, reject) => {
+    //         const reader = new FileReader();
+    //         reader.readAsDataURL(file);
 
-            reader.onload = () => {
-                if (typeof reader.result === 'string') {
-                    const base64 = reader.result.split(',')[1];
-                    resolve(base64);
-                } else {
-                    reject(new Error("Failed to read file as base64"));
-                }
-            };
+    //         reader.onload = () => {
+    //             if (typeof reader.result === 'string') {
+    //                 const base64 = reader.result.split(',')[1];
+    //                 resolve(base64);
+    //             } else {
+    //                 reject(new Error("Failed to read file as base64"));
+    //             }
+    //         };
 
-            reader.onerror = () => {
-                reject(new Error("Error reading file"));
-            };
-        });
-    };
+    //         reader.onerror = () => {
+    //             reject(new Error("Error reading file"));
+    //         };
+    //     });
+    // };
     const onSubmit: SubmitHandler<Inputs> = async (user_data) => {
         if (images.length === 0 || !images[0]?.file) {
             toast.error("Image is required!");
@@ -69,6 +73,8 @@ const Register = () => {
             user_data.avatar = response?.data?.url
             console.log(user_data)
             // user data save to DB
+            await mutateAsync(user_data)
+            reset()
         } catch (error) {
             toast.error(error instanceof Error ? error.message : "An error occurred");
         }
@@ -210,7 +216,11 @@ const Register = () => {
                         size="lg"
                         className="w-full font-semibold"
                     >
-                        Register
+                        {isPending ? <SyncLoader
+                            color="black"
+                            size={8}
+
+                        /> : "Register"}
                     </Button>
                 </form>
                 {/* Navigate To Login Page */}

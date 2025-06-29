@@ -6,10 +6,28 @@ import { EyeIcon, EyeOffIcon } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useState } from 'react';
-
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { useUserLogin } from './api/route';
+import { SyncLoader } from 'react-spinners';
+type Inputs = {
+    email: string
+    password: string
+}
 const LottiePlayer = dynamic(() => import('@lottiefiles/react-lottie-player').then((mod) => mod.Player), { ssr: false });
 const Login = () => {
+    const { mutateAsync, isPending, } = useUserLogin();
     const [showPassword, setShowPassword] = useState(false);
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<Inputs>()
+    const onSubmit: SubmitHandler<Inputs> = async (user_data) => {
+        console.log(user_data)
+        await mutateAsync(user_data)
+
+    }
+
     return (
         <section className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6 px-4 lg:px-16 items-center">
             <head>
@@ -30,7 +48,7 @@ const Login = () => {
                 <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
 
                 <form
-                    // onSubmit={handleSubmit(onSubmit)}
+                    onSubmit={handleSubmit(onSubmit)}
                     className="space-y-5">
                     {/* Email */}
                     <div className="grid gap-1.5">
@@ -43,7 +61,7 @@ const Login = () => {
                             id="email"
                             placeholder="Enter Email"
                             required
-                        // {...register('email')}
+                            {...register('email')}
                         />
                     </div>
                     {/* Password */}
@@ -59,13 +77,13 @@ const Login = () => {
                                 placeholder="Enter Password"
                                 className="pr-10"
                                 required
-                            // {...register("password", {
-                            //     required: 'Password is required',
-                            //     minLength: {
-                            //         value: 6,
-                            //         message: 'Password must be at least 6 characters long'
-                            //     }
-                            // })}
+                                {...register("password", {
+                                    required: 'Password is required',
+                                    minLength: {
+                                        value: 6,
+                                        message: 'Password must be at least 6 characters long'
+                                    }
+                                })}
                             />
                             <Button
                                 type="button"
@@ -81,7 +99,7 @@ const Login = () => {
                                     <EyeIcon className="w-5 h-5 text-white" />
                                 )}
                             </Button>
-                            {/* {errors.password && <p className='text-red-700 text-sm'>{errors.password.message}</p>} */}
+                            {errors.password && <p className='text-red-700 text-sm'>{errors.password.message}</p>}
                         </div>
                     </div>
                     {/* Submit */}
@@ -90,7 +108,11 @@ const Login = () => {
                         size="lg"
                         className="w-full font-semibold"
                     >
-                        LogIn
+                        {isPending ? <SyncLoader
+                            color="black"
+                            size={8}
+
+                        /> : "Login"}
                     </Button>
                 </form>
                 {/* Navigate To Login Page */}

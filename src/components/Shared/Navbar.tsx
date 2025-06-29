@@ -1,4 +1,5 @@
 'use client'
+import { useAuth } from '@/Provider/AuthProvider';
 import ThemeToggle from '../Theme/ThemeToggle';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Button } from '../ui/button';
@@ -27,7 +28,8 @@ const navItems = [
     }
 ];
 const Navbar = () => {
-    const user = null;
+    const { user, logOut } = useAuth();
+    console.log(user)
     const pathname = usePathname();
     return (
         <header className="flex h-20 w-full items-center px-4 md:px-6 shadow-2xl bg-foreground fixed top-0 z-50">
@@ -99,14 +101,14 @@ const Navbar = () => {
                     <DropdownMenu>
                         <DropdownMenuTrigger>
                             <Avatar>
-                                <AvatarImage src={user?.img} alt="avatar" />
+                                <AvatarImage src={user?.avatar} alt="avatar" />
                                 <AvatarFallback />
                             </Avatar>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
-                            <DropdownMenuLabel className='cursor-pointer'>{user?.user_name}</DropdownMenuLabel>
+                            <DropdownMenuLabel className='cursor-pointer'>{user?.name}</DropdownMenuLabel>
                             <DropdownMenuLabel className='cursor-pointer'>{user?.email}</DropdownMenuLabel>
-                            {/* <DropdownMenuLabel onClick={logOut}>LogOut</DropdownMenuLabel> */}
+                            <DropdownMenuLabel onClick={logOut}>LogOut</DropdownMenuLabel>
                             <DropdownMenuSeparator />
                         </DropdownMenuContent>
                     </DropdownMenu>
