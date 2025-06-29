@@ -6,3 +6,5 @@
 6. react hook form
 7. axios
 8. tanstack query
+9. npm i react-images-uploading
+10. cloudenary

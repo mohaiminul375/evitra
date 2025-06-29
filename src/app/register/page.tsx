@@ -5,11 +5,82 @@ import { Label } from '@/components/ui/label';
 import { EyeIcon, EyeOffIcon } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import { useState } from 'react';
+import ImageUploading, { ImageListType } from 'react-images-uploading';
+import toast from 'react-hot-toast';
+import axios from "axios"
 const LottiePlayer = dynamic(() => import('@lottiefiles/react-lottie-player').then((mod) => mod.Player), { ssr: false });
+type Inputs = {
+    name: string,
+    email: string,
+    password: string,
+    avatar: string;
+}
+
+
 const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
+    const [images, setImages] = useState<ImageListType>([]);
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm<Inputs>();
+    //read the image
+    const readFileAsBase64 = (file: File): Promise<string> => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+
+            reader.onload = () => {
+                if (typeof reader.result === 'string') {
+                    const base64 = reader.result.split(',')[1];
+                    resolve(base64);
+                } else {
+                    reject(new Error("Failed to read file as base64"));
+                }
+            };
+
+            reader.onerror = () => {
+                reject(new Error("Error reading file"));
+            };
+        });
+    };
+    const onSubmit: SubmitHandler<Inputs> = async (user_data) => {
+        if (images.length === 0 || !images[0]?.file) {
+            toast.error("Image is required!");
+            return;
+        }
+        const file = images[0].file; // get first file from FileList
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", "evitra-cloud"); // from Cloudinary
+        formData.append("cloud_name", "da5uoyv65"); // optional in unsigned
+        try {
+            const response = await axios.post(
+                "https://api.cloudinary.com/v1_1/da5uoyv65/image/upload",
+                formData,
+                { headers: { "content-type": "multipart/form-data" } }
+            );
+            console.log(response.data.url)
+            user_data.avatar = response?.data?.url
+            console.log(user_data)
+            // user data save to DB
+        } catch (error) {
+            toast.error(error instanceof Error ? error.message : "An error occurred");
+        }
+    }
+
+    // Handle image change
+    const handleImageChange = (imageList: ImageListType) => {
+        setImages(imageList);
+    };
+
+
+
     return (
         <section className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6 px-4 lg:px-16 items-center">
             <head>
@@ -30,7 +101,7 @@ const Register = () => {
             <div className="bg-foreground dark:bg-primary-foreground shadow-md rounded-xl p-6 sm:p-8 text-white">
                 <h2 className="text-2xl font-bold text-center mb-6">Register</h2>
                 <div className="mb-6 flex justify-center">
-                    {/* {images.length > 0 && (
+                    {images.length > 0 && (
                         <Image
                             height={80}
                             width={80}
@@ -38,10 +109,10 @@ const Register = () => {
                             alt="preview"
                             className=" rounded-full"
                         />
-                    )} */}
+                    )}
                 </div>
                 <form
-                    // onSubmit={handleSubmit(onSubmit)}    
+                    onSubmit={handleSubmit(onSubmit)}
                     className="space-y-5">
                     {/* Name */}
                     <div className="grid gap-1.5">
@@ -53,7 +124,7 @@ const Register = () => {
                             id="name"
                             placeholder="Enter Name"
                             required
-                        // {...register('name')}
+                            {...register('name')}
                         />
                     </div>
                     {/* Email */}
@@ -66,12 +137,12 @@ const Register = () => {
                             id="email"
                             placeholder="Enter Email"
                             required
-                        // {...register('email')}
+                            {...register('email')}
                         />
                     </div>
                     <div className="grid w-full items-center gap-1.5">
                         <Label htmlFor="nid">Profile Photo<span className='text-red-700 font-bold'>*</span></Label>
-                        {/* <ImageUploading
+                        <ImageUploading
 
                             multiple
                             value={images}
@@ -93,7 +164,7 @@ const Register = () => {
                                     </Button>
                                 </div>
                             )}
-                        </ImageUploading> */}
+                        </ImageUploading>
                     </div>
                     {/* Password */}
                     <div className="grid gap-1.5">
@@ -107,13 +178,13 @@ const Register = () => {
                                 placeholder="Enter Password"
                                 className="pr-10"
                                 required
-                                // {...register("password", {
-                                //     required: 'Password is required',
-                                //     minLength: {
-                                //         value: 6,
-                                //         message: 'Password must be at least 6 characters long'
-                                //     }
-                                // })}
+                                {...register("password", {
+                                    required: 'Password is required',
+                                    minLength: {
+                                        value: 6,
+                                        message: 'Password must be at least 6 characters long'
+                                    }
+                                })}
                             />
                             <Button
                                 type="button"
@@ -129,7 +200,7 @@ const Register = () => {
                                     <EyeIcon className="w-5 h-5 text-white" />
                                 )}
                             </Button>
-                            {/* {errors.password && <p className='text-red-700 text-sm'>{errors.password.message}</p>} */}
+                            {errors.password && <p className='text-red-700 text-sm'>{errors.password.message}</p>}
                         </div>
                     </div>
 
