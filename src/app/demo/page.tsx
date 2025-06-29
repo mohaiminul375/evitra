@@ -1,17 +1,12 @@
-import {
-    SyncLoader
-} from 'react-spinners';
+// 'use client'
+// import { Commet } from "react-loading-indicators"
+// const loading = () => {
+//     return (
+//         <div className="flex justify-center items-center min-h-96">
+//             <Commet color="#5628a5" size="medium" text="Evitra"/>
 
-const page = () => {
-    return (
-        <div>
-            <SyncLoader
-                color="black"
-                size={8}
-        
-            />
-        </div>
-    );
-};
+//         </div>
+//     );
+// };
 
-export default page;
+// export default loading;

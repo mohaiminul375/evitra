@@ -40,7 +40,7 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               <Navbar />
-              <main className="md:max-w-7xl mx-auto mt-20">
+              <main className="md:max-w-7xl mx-auto mt-32">
                 {children}
               </main>
               <Toaster />
