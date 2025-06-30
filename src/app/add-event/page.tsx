@@ -2,14 +2,16 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import { setHours, setMinutes } from 'date-fns';
 import "react-datepicker/dist/react-datepicker.css";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAuth } from "@/Provider/AuthProvider";
+import { useCreateEvent } from "./api/route";
+import { SyncLoader } from "react-spinners";
+import { useRouter } from "next/navigation";
 type Inputs = {
     event_title: string,
     name: string,
@@ -21,7 +23,9 @@ type Inputs = {
     priority: string | undefined,
 }
 const AddEvent = () => {
-    const { user } = useAuth()
+    const router = useRouter()
+    const { mutateAsync, isPending, } = useCreateEvent();
+    const { user, loading } = useAuth()
     const [selectedDateTime, setSelectedDateTime] = useState<Date | null>(null)
     const baseDate = new Date();
     const excludedTimes = [
@@ -30,6 +34,12 @@ const AddEvent = () => {
         setHours(setMinutes(baseDate, 30), 19),
         setHours(setMinutes(baseDate, 30), 17),
     ];
+    // secure path Private route
+    useEffect(() => {
+        if (!loading && !user) {
+            router.push('/login');
+        }
+    }, [user, loading, router]);
     const {
         register,
         handleSubmit,
@@ -40,7 +50,11 @@ const AddEvent = () => {
         event_data.event_Date = selectedDateTime?.toISOString() as string;
         event_data.email = user?.email;
         event_data.name = user?.name as string;
-        console.log(event_data)
+        // console.log(event_data)
+        // save to DB
+        await mutateAsync(event_data)
+        reset()
+        setSelectedDateTime(null)
     }
     return (
         <section>
@@ -102,7 +116,11 @@ const AddEvent = () => {
                             </div>
                         </div>
                     </div>
-                    <Button type="submit" className="w-full mt-5">Create Event</Button>
+                    <Button type="submit" className="w-full mt-5">{isPending ? <SyncLoader
+                        color="black"
+                        size={8}
+
+                    /> : "Create Event"}</Button>
                 </form>
             </div>
         </section>

@@ -100,15 +100,15 @@ const Navbar = () => {
                 <div className="ml-auto flex items-center">
                     <DropdownMenu>
                         <DropdownMenuTrigger>
-                            <Avatar>
-                                <AvatarImage src={user?.avatar} alt="avatar" />
+                            <Avatar className='border-2 border-white'>
+                                <AvatarImage className='cursor-pointer' src={user?.avatar} alt="avatar" />
                                 <AvatarFallback />
                             </Avatar>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
-                            <DropdownMenuLabel className='cursor-pointer'>{user?.name}</DropdownMenuLabel>
-                            <DropdownMenuLabel className='cursor-pointer'>{user?.email}</DropdownMenuLabel>
-                            <DropdownMenuLabel onClick={logOut}>LogOut</DropdownMenuLabel>
+                            <DropdownMenuLabel className='cursor-default'>{user?.name}</DropdownMenuLabel>
+                            <DropdownMenuLabel className='cursor-default'>{user?.email}</DropdownMenuLabel>
+                            <DropdownMenuLabel className='cursor-pointer' onClick={logOut}>LogOut</DropdownMenuLabel>
                             <DropdownMenuSeparator />
                         </DropdownMenuContent>
                     </DropdownMenu>

@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             const fetchUser = async () => {
                 try {
                     setLoading(true);
-                    const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_LOCAL}/users/user-data`, {
+                    const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/user-data`, {
                         headers: {
                             authorization: `Bearer ${storedToken}`,
                         }
