@@ -9,6 +9,14 @@ import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { CiMenuFries } from "react-icons/ci";
+import Image from 'next/image';
+import logo from "../../../public/logo.png";
+import { Quintessential } from "next/font/google";
+export const quintessential = Quintessential({
+    weight: '400',
+    subsets: ['latin'],
+});
+
 const navItems = [
     {
         title: 'Home',
@@ -67,8 +75,10 @@ const Navbar = () => {
             {/* Logo */}
             <Link href="/" className="flex items-center" prefetch={false}>
                 {/* <MountainIcon /> */}
-                <span className="ml-2 text-lg text-white hidden lg:block">Evitra</span>
-
+                <div className='flex items-center'>
+                    <Image className='rounded-full' width={30} src={logo} alt='logo' />
+                    <span className={`ml-2 text-lg md:text-3xl italic font-bold text-white block ${quintessential.className}`}>Evitra</span>
+                </div>
             </Link>
             {/* Desktop Navigation Menu */}
             <div className="hidden lg:flex flex-grow justify-end mr-4">

@@ -18,6 +18,12 @@ interface Event {
 interface ParamsProp {
     email: string | undefined,
 }
+
+interface UpdateProps {
+    _id?: string,
+    newEvent?: object,
+}
+
 // get all events by email
 export const useGetUserEvents = ({ email }: ParamsProp) => {
 
@@ -31,6 +37,38 @@ export const useGetUserEvents = ({ email }: ParamsProp) => {
     })
 
     return { data, isPending, isError, error }
+}
+// updateTodo
+export const useUpdateEvent = () => {
+    const queryClient = useQueryClient();
+    const mutation = useMutation({
+        mutationFn: async ({ _id, newEvent }: UpdateProps) => {
+            const { data } = await axios.put(`${process.env.NEXT_PUBLIC_SERVER_URL}/events/update-event/${_id}`, newEvent)
+            return data
+        },
+        mutationKey: ['update-event'],
+        onSuccess: (data) => {
+            console.log(data)
+            if (data.success === true) {
+                toast.success('Event updated Successfully')
+                queryClient.invalidateQueries({ queryKey: ['all-event'] })
+                queryClient.invalidateQueries({ queryKey: ['all-event-user'] })
+            }
+        }, onError: (error) => {
+            //error.response.data.message
+            const axiosError = error as AxiosError<ApiErrorResponse>;
+            const existedError = axiosError?.response?.data?.message;
+            console.log(existedError)
+            if (existedError) {
+                toast.error(existedError)
+            } else if (error.message) {
+                toast.error(error.message)
+            } else {
+                toast.error('failed to update')
+            }
+        },
+    })
+    return mutation;
 }
 // delete a Event
 export const useDeleteEvent = () => {

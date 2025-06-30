@@ -4,9 +4,11 @@ import { FaPencil, FaPhone, FaTrash, FaUserGroup } from "react-icons/fa6";
 import { Button } from "../ui/button";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import toast from "react-hot-toast";
 import { useDeleteEvent } from "@/app/my-event/api/route";
 import { SyncLoader } from "react-spinners";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { useState } from "react";
+import UpdateEvent from "../Update/UpdateEvent";
 interface Event {
     _id: string,
     event_title: string,
@@ -22,6 +24,7 @@ interface EventProp {
     event: Event,
 }
 const MyEventCard = ({ event }: EventProp) => {
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
     const { mutateAsync, isPending } = useDeleteEvent()
     const { _id, event_title, name, email, event_Date, location, description, contact, attendeeCount } = event;
     // handle delete
@@ -96,11 +99,23 @@ const MyEventCard = ({ event }: EventProp) => {
             <div className="flex-grow"></div>
 
             <div className="flex justify-between mt-4">
-                <Button className="text-base" variant='default'>{isPending ? <SyncLoader
-                    color="black"
-                    size={8}
+                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                    <DialogTrigger asChild>
+                        <Button className="text-base" variant='default'>{isPending ? <SyncLoader
+                            color="black"
+                            size={8}
 
-                /> : <span className="flex items-center gap-2"><FaPencil />Edit</span>}</Button>
+                        /> : <span className="flex items-center gap-2"><FaPencil />Edit</span>}</Button>
+
+                    </DialogTrigger>
+                    <DialogContent className="md:max-w-4xl bg-white">
+                        <DialogHeader className="text-primary text-center">
+                            <DialogTitle className="text-center">Edit The Event</DialogTitle>
+                        </DialogHeader>
+                        <UpdateEvent event={event}></UpdateEvent>
+                    </DialogContent>
+                </Dialog>
+
                 <Button variant='default' >Attendee List</Button>
                 <Button onClick={() => handleDeleteEvent(_id)} className="text-base text-red-700" variant='default' ><FaTrash /> Delete</Button>
             </div>
