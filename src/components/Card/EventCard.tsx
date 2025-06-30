@@ -1,7 +1,11 @@
+'use client'
 import { MdLocationOn, MdManageAccounts } from "react-icons/md";
 import { IoTimeSharp } from "react-icons/io5";
 import { FaPhone, FaUserGroup } from "react-icons/fa6";
 import { Button } from "../ui/button";
+import { useAuth } from "@/Provider/AuthProvider";
+import { confirmAlert } from "react-confirm-alert";
+import { useJoinEvent } from "@/app/events/api/route";
 interface Event {
     _id: string,
     event_title: string,
@@ -17,7 +21,50 @@ interface EventProp {
     event: Event,
 }
 const EventCard = ({ event }: EventProp) => {
-    const { event_title, name, email, event_Date, location, description, contact, attendeeCount } = event;
+    const { mutateAsync } = useJoinEvent()
+    const { user } = useAuth();
+    const { _id, event_title, name, email, event_Date, location, description, contact, attendeeCount } = event;
+    // handle join
+    const handleJoinEvent = (id: string) => {
+        const joinReq = {
+            name: user?.name,
+            email: user?.email,
+            event_id: id
+        }
+        console.log(joinReq)
+        confirmAlert({
+            customUI: ({ onClose }) => {
+                return (
+                    <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+                        <div className="bg-white rounded-xl p-6 w-full max-w-sm text-center shadow-xl">
+                            <h2 className="text-xl font-bold text-gray-800 mb-2">Are you sure?</h2>
+                            <p className="text-sm text-gray-600 mb-4">
+                                Do you really want to Join this Event
+                            </p>
+
+                            <div className="flex justify-center gap-4">
+                                <button
+                                    onClick={async () => {
+                                        await mutateAsync(joinReq)
+                                        onClose();
+                                    }}
+                                    className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+                                >
+                                    Yes, Join
+                                </button>
+                                <button
+                                    onClick={onClose}
+                                    className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-md text-sm font-medium"
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            },
+        });
+    }
     return (
         <div className="bg-white p-5 rounded-xl shadow-md flex flex-col">
             <h3 className="text-xl font-bold text-gray-800">{event_title}</h3>
@@ -52,7 +99,7 @@ const EventCard = ({ event }: EventProp) => {
             <div className="flex-grow"></div>
 
             <div className="flex justify-between mt-4">
-                <Button variant='default' >Join Event</Button>
+                <Button onClick={() => handleJoinEvent(_id)} variant='default' >Join Event</Button>
                 <Button variant='default' >See More</Button>
                 {/* <button className="text-sm text-blue-600 hover:underline">See More</button> */}
             </div>

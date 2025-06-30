@@ -5,7 +5,7 @@ import toast from 'react-hot-toast'
 interface ApiErrorResponse {
     message?: string;
 }
-// create a Event
+// create an Event
 export const useCreateEvent = () => {
     const queryClient = useQueryClient();
     const mutation = useMutation({
