@@ -33,14 +33,14 @@ const Events = () => {
         <section>
             {/* Heading */}
             <div className='text-center'>
-                <h2 className='text-3xl font-semibold'>All Events</h2>
-                <p className='text-base mt-2 italic'>
+                <h2 className='text-3xl font-semibold dark:text-white'>All Events</h2>
+                <p className='text-base mt-2 italic dark:text-white'>
                     Explore all the exciting events happening in one place. <br /> From tech meetups to fun activities, stay updated and never miss out!
                 </p>
             </div>
             {/* Filter */}
             <div className='my-8'>
-                <div className="w-full max-w-3xl border border-primary rounded-lg p-4 flex flex-col md:flex-row items-center gap-4 mx-auto bg-white">
+                <div className="w-full max-w-3xl border border-primary rounded-lg p-4 flex flex-col md:flex-row items-center gap-4 mx-auto bg-white dark:bg-primary-foreground">
                     <form
                         onSubmit={handleSearch}
                         className="flex w-full md:w-2/3">

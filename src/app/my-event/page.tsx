@@ -18,8 +18,8 @@ const MyEvent = () => {
         <section>
             {/* Heading */}
             <div className='text-center'>
-                <h2 className='text-3xl font-semibold'>My Events</h2>
-                <p className='text-base mt-2 italic text-gray-600'>
+                <h2 className='text-3xl font-semibold dark:text-white'>My Events</h2>
+                <p className='text-base mt-2 italic text-gray-600 dark:text-white'>
                     Here you can manage, edit, or delete all the events you’ve created. <br /> Stay in control and keep your events up to date.
                 </p>
             </div>

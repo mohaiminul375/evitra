@@ -5,7 +5,8 @@ import { FaPhone, FaUserGroup } from "react-icons/fa6";
 import { Button } from "../ui/button";
 import { useAuth } from "@/Provider/AuthProvider";
 import { confirmAlert } from "react-confirm-alert";
-import { useJoinEvent } from "@/app/events/api/route";
+import { useGetJoinData, useJoinEvent } from "@/app/events/api/route";
+import Loading from "@/app/loading";
 interface Event {
     _id: string,
     event_title: string,
@@ -21,10 +22,17 @@ interface EventProp {
     event: Event,
 }
 const EventCard = ({ event }: EventProp) => {
-    const { mutateAsync } = useJoinEvent()
     const { user } = useAuth();
+    const { data: participants, isPending } = useGetJoinData(user?.email as string);
+    const { mutateAsync } = useJoinEvent()
     const { _id, event_title, name, email, event_Date, location, description, contact, attendeeCount } = event;
-    // handle join
+    if (isPending) {
+        return <Loading />
+    }
+    // console.log(participants)
+    const isJoined = participants?.some((item) => item.event_id == _id);
+    console.log(isJoined)
+
     const handleJoinEvent = (id: string) => {
         const joinReq = {
             name: user?.name,
@@ -48,7 +56,7 @@ const EventCard = ({ event }: EventProp) => {
                                         await mutateAsync(joinReq)
                                         onClose();
                                     }}
-                                    className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+                                    className="bg-foreground cursor-pointer text-white px-4 py-2 rounded-md text-sm font-medium"
                                 >
                                     Yes, Join
                                 </button>
@@ -66,9 +74,9 @@ const EventCard = ({ event }: EventProp) => {
         });
     }
     return (
-        <div className="bg-white p-5 rounded-xl shadow-md flex flex-col">
-            <h3 className="text-xl font-bold text-gray-800">{event_title}</h3>
-            <p className="text-sm text-gray-600 mt-2">
+        <div className="bg-white dark:bg-primary-foreground dark:text-white p-5 rounded-xl shadow-md flex flex-col">
+            <h3 className="text-xl font-bold text-gray-800 dark:text-white">{event_title}</h3>
+            <p className="text-sm text-gray-600 mt-2 dark:text-white">
                 <span className="flex items-center gap-1 mb-1">
                     <MdManageAccounts className="text-xl" />
                     <strong>Posted by:</strong> {name}
@@ -76,7 +84,7 @@ const EventCard = ({ event }: EventProp) => {
                 (<span className="text-primary">{email}</span>)
             </p>
 
-            <p className="text-sm mt-1 flex items-center gap-2">
+            <p className="text-sm mt-2 flex items-center gap-2">
                 <IoTimeSharp className="text-xl" /><strong>Date & Time:</strong> {new Date(event_Date).toLocaleString()}
             </p>
 
@@ -87,11 +95,11 @@ const EventCard = ({ event }: EventProp) => {
                 <FaPhone className="text-sm" /> <strong>Contact:</strong> {contact}
             </p>
 
-            <p className="text-gray-700 mt-2">
+            <p className="text-gray-700 mt-2 dark:text-white">
                 {description.slice(0, 90)}...
             </p>
 
-            <p className="text-sm text-gray-500 mt-1 flex items-center gap-2">
+            <p className="text-sm text-gray-500 mt-1 flex items-center gap-2 dark:text-white">
                 <FaUserGroup className="text-xl" />   <strong>Attendees:</strong> {attendeeCount}
             </p>
 
@@ -99,7 +107,7 @@ const EventCard = ({ event }: EventProp) => {
             <div className="flex-grow"></div>
 
             <div className="flex justify-between mt-4">
-                <Button onClick={() => handleJoinEvent(_id)} variant='default' >Join Event</Button>
+                <Button className="disabled:ursor-not-allowed" disabled={isJoined} onClick={() => handleJoinEvent(_id)} variant='default' >Join Event</Button>
                 <Button variant='default' >See More</Button>
                 {/* <button className="text-sm text-blue-600 hover:underline">See More</button> */}
             </div>

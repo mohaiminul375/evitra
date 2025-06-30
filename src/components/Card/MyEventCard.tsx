@@ -66,9 +66,9 @@ const MyEventCard = ({ event }: EventProp) => {
         });
     }
     return (
-        <div className="bg-white p-5 rounded-xl shadow-md flex flex-col">
-            <h3 className="text-xl font-bold text-gray-800">{event_title}</h3>
-            <p className="text-sm text-gray-600 mt-2">
+        <div className="bg-white dark:bg-primary-foreground dark:text-white p-5 rounded-xl shadow-md flex flex-col">
+            <h3 className="text-xl font-bold text-gray-800 dark:text-white">{event_title}</h3>
+            <p className="text-sm text-gray-600 mt-2 dark:text-white">
                 <span className="flex items-center gap-1 mb-1">
                     <MdManageAccounts className="text-xl" />
                     <strong>Posted by:</strong> {name}
@@ -76,7 +76,7 @@ const MyEventCard = ({ event }: EventProp) => {
                 (<span className="text-primary">{email}</span>)
             </p>
 
-            <p className="text-sm mt-1 flex items-center gap-2">
+            <p className="text-sm mt-3 flex items-center gap-2">
                 <IoTimeSharp className="text-xl" /><strong>Date & Time:</strong> {new Date(event_Date).toLocaleString()}
             </p>
 
@@ -87,11 +87,11 @@ const MyEventCard = ({ event }: EventProp) => {
                 <FaPhone className="text-sm" /> <strong>Contact:</strong> {contact}
             </p>
 
-            <p className="text-gray-700 mt-2">
+            <p className="text-gray-700 mt-2 dark:text-white">
                 {description.slice(0, 90)}...
             </p>
 
-            <p className="text-sm text-gray-500 mt-1 flex items-center gap-2">
+            <p className="text-sm text-gray-500 mt-1 flex items-center gap-2 dark:text-white">
                 <FaUserGroup className="text-xl" />   <strong>Attendees:</strong> {attendeeCount}
             </p>
 

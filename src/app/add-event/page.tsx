@@ -88,7 +88,7 @@ const AddEvent = () => {
                                 <Label htmlFor="event_Date">Event Date <span className="text-red-600 font-bold">*</span></Label>
                                 <DatePicker
                                     required
-                                    className="border-2 rounded-md py-1"
+                                    className="border-2 rounded-md py-1 w-full"
                                     selected={selectedDateTime}
                                     onChange={(date) => setSelectedDateTime(date)}
                                     minDate={new Date()}

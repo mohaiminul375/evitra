@@ -6,6 +6,7 @@ interface ApiErrorResponse {
 }
 interface Event {
     _id: string,
+    event_id?: string,
     event_title: string,
     name: string,
     email: string,
@@ -20,7 +21,19 @@ interface GetProps {
     dateRange: string,
     todayDate: string,
 }
-// get all events
+// get join data
+export const useGetJoinData = (email: string) => {
+    const { data, isPending, isError, error } = useQuery<Event[]>({
+        queryFn: async () => {
+            const { data } = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/participants/all-list/${email}`)
+            return data;
+        },
+        queryKey: ['participants-list']
+    })
+
+    return { data, isPending, isError, error }
+}
+// get all event
 export const useGetEvents = ({ search, dateRange, todayDate }: GetProps) => {
 
     const { data, isPending, isError, error } = useQuery<Event[]>({
@@ -44,7 +57,7 @@ export const useJoinEvent = () => {
     const queryClient = useQueryClient();
     const mutation = useMutation({
         mutationFn: async (joinEvent: object) => {
-            const { data } = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_LOCAL}/participants/join-event`, joinEvent)
+            const { data } = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/participants/join-event`, joinEvent)
             return data
         },
         mutationKey: ['join-event'],
@@ -55,6 +68,7 @@ export const useJoinEvent = () => {
                 queryClient.invalidateQueries({ queryKey: ['all-event'] })
                 queryClient.invalidateQueries({ queryKey: ['all-event-user'] })
                 queryClient.invalidateQueries({ queryKey: ['all-join-event'] })
+                queryClient.invalidateQueries({ queryKey: ['participants-list'] })
             }
         }, onError: (error) => {
             //error.response.data.message
