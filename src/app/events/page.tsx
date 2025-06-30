@@ -5,12 +5,12 @@ import Loading from "../loading";
 import { useGetEvents } from "./api/route";
 
 const Events = () => {
-    const { data: events, isPending, isError, error } = useGetEvents();
+    const { data: events = [], isPending, isError, error } = useGetEvents();
     if (isPending) {
         return <Loading />
     }
     if (isError) return <p>Error: {(error as Error)?.message || "Something went wrong!"}</p>;
-    console.log(events)
+
     return (
         <section>
             {/* Heading */}

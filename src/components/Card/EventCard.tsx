@@ -2,10 +2,22 @@ import { MdLocationOn, MdManageAccounts } from "react-icons/md";
 import { IoTimeSharp } from "react-icons/io5";
 import { FaPhone, FaUserGroup } from "react-icons/fa6";
 import { Button } from "../ui/button";
-
-const EventCard = ({ event }) => {
+interface Event {
+    _id: string,
+    event_title: string,
+    name: string,
+    email: string,
+    event_Date: string,
+    location: string,
+    description: string,
+    contact: string,
+    attendeeCount: number,
+}
+interface EventProp {
+    event: Event,
+}
+const EventCard = ({ event }: EventProp) => {
     const { event_title, name, email, event_Date, location, description, contact, attendeeCount } = event;
-    console.log(event)
     return (
         <div className="bg-white p-5 rounded-xl shadow-md flex flex-col">
             <h3 className="text-xl font-bold text-gray-800">{event_title}</h3>

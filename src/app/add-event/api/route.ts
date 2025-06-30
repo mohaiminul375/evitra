@@ -19,6 +19,7 @@ export const useCreateEvent = () => {
             if (data.success === true) {
                 toast.success('Event created Successfully')
                 queryClient.invalidateQueries({ queryKey: ['all-event'] })
+                queryClient.invalidateQueries({ queryKey: ['all-event-user'] })
             }
         }, onError: (error) => {
             //error.response.data.message
