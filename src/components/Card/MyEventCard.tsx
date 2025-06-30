@@ -108,7 +108,7 @@ const MyEventCard = ({ event }: EventProp) => {
                         /> : <span className="flex items-center gap-2"><FaPencil />Edit</span>}</Button>
 
                     </DialogTrigger>
-                    <DialogContent className="md:max-w-4xl bg-white">
+                    <DialogContent className="md:max-w-4xl bg-white dark:bg-background dark:text-white">
                         <DialogHeader className="text-primary text-center">
                             <DialogTitle className="text-center">Edit The Event</DialogTitle>
                         </DialogHeader>
