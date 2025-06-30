@@ -6,7 +6,7 @@
 
 - Evitra is a fully functional Event Management Web Application using the MERN Stack. The application will support custom authentication, dynamic event operations, A search and filter system for browsing events efficiently, and an intuitive interface designed for ease of use and performance.
 
-## 🌐 Live Site: https://zentask-eight.vercel.app
+## 🌐 [Live Server](https://evitra-client.vercel.app/)
 
 # 🔧 Run the Project Locally
 
@@ -50,12 +50,15 @@ npm run dev -- --host
 - User can create an Event
 
 ### 4.All Event(Private Route)
+
 - Users can view all listed events with dynamic filtering by date range and real-time search functionality for quick and efficient browsing.
 
 ### 5.MY Events Page(Private Route)
+
 - On this page, users can see the events they've added and have the option to edit or delete their own events.
 
 ### 5.Join Event
+
 - User can Join event through press join button and join an event only once.
 
 <!-- ### 6.Update Profile
@@ -95,4 +98,3 @@ npm run dev -- --host
 # 🖥️ Server Side
 
 - [Evitra Server Repository](https://github.com/mohaiminul375/evitra-server)
-

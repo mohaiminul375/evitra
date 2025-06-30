@@ -2,15 +2,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import { setHours, setMinutes } from 'date-fns';
 import "react-datepicker/dist/react-datepicker.css";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAuth } from "@/Provider/AuthProvider";
 import { SyncLoader } from "react-spinners";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { useUpdateEvent } from "@/app/my-event/api/route";
+import { useState } from "react";
 type Inputs = {
     event_title: string,
     name: string,
