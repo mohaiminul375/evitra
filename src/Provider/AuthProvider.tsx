@@ -2,7 +2,7 @@
 import Loading from "../app/loading";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { ReactNode, useContext, useEffect, useState } from "react";
+import { ReactNode, useCallback, useContext, useEffect, useState } from "react";
 import { createContext } from "react";
 interface User {
     _id?: string;
@@ -25,6 +25,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [token, setToken] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
+    // Logout and redirect to login page
+    const logOut = useCallback(() => { //use call back for memorize and prevent re-rendering
+        localStorage.removeItem('token');
+        setUser(null);
+        router.replace('/login');
+    }, [router]);
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const storedToken = localStorage.getItem('token');
@@ -68,14 +74,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
             fetchUser();
         }
-    }, [token]); // Run on mount and when token changes
+    }, [token, logOut]); // Run on mount and when token changes
 
-    // Logout and redirect to login page
-    const logOut = () => {
-        localStorage.removeItem('token');
-        setUser(null);
-        router.replace('/login');
-    };
+
     return (
         <AuthContext.Provider value={{ user, loading, error, logOut, setToken }}>
             {loading ? <div><Loading /></div> : error ? <div>{error}</div> : children}

@@ -3,16 +3,15 @@ import { Button } from "@/components/ui/button";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useAuth } from "@/Provider/AuthProvider";
 import ImageUploading, { ImageListType } from 'react-images-uploading';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useUpdateProfile } from "./api/route";
-import { useRouter } from "next/navigation";
+import PrivateRoute from "@/Router/PrivateRoute";
 type Inputs = {
     name: string,
     email: string,
@@ -20,7 +19,6 @@ type Inputs = {
     avatar: string;
 }
 const UpdateProfile = () => {
-    // const router = useRouter()
     const updateUser = useUpdateProfile();
     const { user } = useAuth();
     const [images, setImages] = useState<ImageListType>([]);
@@ -170,4 +168,4 @@ const UpdateProfile = () => {
     );
 };
 
-export default UpdateProfile;
+export default PrivateRoute(UpdateProfile);

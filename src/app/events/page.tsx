@@ -12,12 +12,12 @@ import { FaFilterCircleXmark } from "react-icons/fa6";
 import {
     Pagination,
     PaginationContent,
-    PaginationEllipsis,
     PaginationItem,
     PaginationLink,
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination"
+import PrivateRoute from "@/Router/PrivateRoute";
 const Events = () => {
     const [todayDate, setTodayDate] = useState('');
     const [dateRange, setDateRange] = useState('')
@@ -152,4 +152,4 @@ const Events = () => {
     );
 };
 
-export default Events;
+export default PrivateRoute(Events);

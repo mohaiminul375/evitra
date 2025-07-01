@@ -45,7 +45,7 @@ const Navbar = () => {
             <div className="lg:hidden mr-4">
                 <Sheet>
                     <SheetTrigger asChild>
-                        <Button variant="outline" size="icon">
+                        <Button className='dark:bg-primary' variant="outline" size="icon">
                             <CiMenuFries className='text-foreground' />
                             <span className="sr-only">Toggle navigation menu</span>
                         </Button>

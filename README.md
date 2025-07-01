@@ -7,7 +7,7 @@ Desecnding pegination update profile
 
 - Evitra is a fully functional Event Management Web Application using the MERN Stack. The application will support custom authentication, dynamic event operations, A search and filter system for browsing events efficiently, and an intuitive interface designed for ease of use and performance.
 
-## 🌐 [Live Server](https://evitra-client.vercel.app/)
+## 🌐 [Live Url](https://evitra-client.vercel.app/)
 
 # 🔧 Run the Project Locally
 

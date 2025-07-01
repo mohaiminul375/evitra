@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import DatePicker from "react-datepicker";
 import { setHours, setMinutes } from 'date-fns';
 import "react-datepicker/dist/react-datepicker.css";
@@ -11,8 +11,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useAuth } from "@/Provider/AuthProvider";
 import { useCreateEvent } from "./api/route";
 import { SyncLoader } from "react-spinners";
-import { useRouter } from "next/navigation";
-import Loading from "../loading";
+import PrivateRoute from "@/Router/PrivateRoute";
+
 type Inputs = {
     event_title: string,
     name: string,
@@ -30,9 +30,9 @@ const AddEvent = () => {
         reset,
         formState: { errors },
     } = useForm<Inputs>();
-    const router = useRouter()
+
     const { mutateAsync, isPending, } = useCreateEvent();
-    const { user, loading } = useAuth()
+    const { user } = useAuth()
     const [selectedDateTime, setSelectedDateTime] = useState<Date | null>(null)
     const baseDate = new Date();
     const excludedTimes = [
@@ -41,17 +41,7 @@ const AddEvent = () => {
         setHours(setMinutes(baseDate, 30), 19),
         setHours(setMinutes(baseDate, 30), 17),
     ];
-    // secure path Private route
-    useEffect(() => {
-        <Loading />
-        if (!loading && !user) {
-            router.push('/login');
-        }
-    }, [user, loading, router]);
-    // load form auth
-    if (loading) {
-        <Loading />
-    }
+
     // react hook form
     const onSubmit: SubmitHandler<Inputs> = async (event_data) => {
         event_data.event_Date = selectedDateTime?.toISOString() as string;
@@ -137,4 +127,4 @@ const AddEvent = () => {
     );
 };
 
-export default AddEvent;
+export default PrivateRoute(AddEvent);

@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { useGetParticipants } from "../api/route";
 import Loading from "@/app/loading";
 import AttendanceTable from "@/components/Table/AttendanceTable";
+import PrivateRoute from "@/Router/PrivateRoute";
 
 const Attendees = () => {
     const { id } = useParams();
@@ -50,4 +51,4 @@ const Attendees = () => {
     );
 };
 
-export default Attendees;
+export default PrivateRoute(Attendees);

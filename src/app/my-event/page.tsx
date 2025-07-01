@@ -4,6 +4,7 @@ import { useAuth } from "@/Provider/AuthProvider";
 import { useGetUserEvents } from "./api/route";
 import Loading from "../loading";
 import MyEventCard from "@/components/Card/MyEventCard";
+import PrivateRoute from "@/Router/PrivateRoute";
 
 const MyEvent = () => {
     const { user } = useAuth()
@@ -41,4 +42,4 @@ const MyEvent = () => {
     );
 };
 
-export default MyEvent;
+export default PrivateRoute(MyEvent);
