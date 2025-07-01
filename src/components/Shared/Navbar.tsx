@@ -20,23 +20,29 @@ export const quintessential = Quintessential({
 const navItems = [
     {
         title: 'Home',
-        path: '/'
+        path: '/',
+        type: 'public',
+
     },
     {
         title: 'Events',
-        path: '/events'
+        path: '/events',
+        type: 'private',
     },
     {
         title: 'Add Event',
-        path: '/add-event'
+        path: '/add-event',
+        type: 'private',
     },
     {
         title: 'My Event',
-        path: '/my-event'
+        path: '/my-event',
+        type: 'private',
     },
     {
         title: 'Joined Event',
-        path: '/joined-event'
+        path: '/joined-event',
+        type: 'private',
     }
 ];
 const Navbar = () => {
@@ -56,10 +62,7 @@ const Navbar = () => {
                     </SheetTrigger>
                     <SheetContent side="left">
                         <div className="grid gap-2 py-6">
-                            {navItems.map((item, index) => {
-                                // if (item.title === 'Admin Dashboard' && user?.role !== 'Admin') {
-                                //     return null;
-                                // }
+                            {navItems.filter(item => item.type === 'public' || (item.type === 'private' && user)).map((item, index) => {
                                 return (
                                     <Link
                                         key={index}
@@ -88,11 +91,7 @@ const Navbar = () => {
             <div className="hidden lg:flex flex-grow justify-end mr-4">
                 <NavigationMenu>
                     <NavigationMenuList className="flex space-x-3">
-                        {navItems.map((item, index) => {
-
-                            // if (item.title === 'Admin Dashboard' && user?.role !== 'Admin') {
-                            //     return null;
-                            // }
+                        {navItems.filter(item => item.type === 'public' || (item.type === 'private' && user)).map((item, index) => {
                             return (
                                 <NavigationMenuLink asChild key={index}>
                                     <Link
