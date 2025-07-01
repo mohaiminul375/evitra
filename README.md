@@ -44,14 +44,15 @@ npm run dev -- --host
 ### 2. Home Page
 
 - After login, user is redirected to the Home Page
+- Theme toggle (Light,Dark) apply all over website
 
 ### 3. Create an Event(Private Route)
 
-- User can create an Event
+- User can create an Event submit some data and it will save Data base
 
 ### 4.All Event(Private Route)
 
-- Users can view all listed events with `descending` dynamic filtering by date range and real-time search functionality for quick and efficient browsing.
+- Users can view all listed events with `Descending order` dynamic filtering by date range and real-time search functionality for quick and efficient browsing.
 - Pagination for better user Experience
 
 ### 5.MY Events Page(Private Route)
