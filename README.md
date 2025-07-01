@@ -66,11 +66,10 @@ npm run dev -- --host
 - if event already expired user can't join
 - User can cancel event join
 
-### 6.Joined Event
-
+### 6.Joined Event List(Private Route)
 - User can See all event he has sent and interest event list in card formate
 
-### 7.Update Profile
+### 7.Update Profile(Private Route)
 
 - User can update their profile only name and image
 ### 8.Error & Loading
