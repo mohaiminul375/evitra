@@ -73,6 +73,9 @@ npm run dev -- --host
 ### 7.Update Profile
 
 - User can update their profile only name and image
+### 8.Error & Loading
+
+- Meaning full Error page and loading spinner when need
 
 # 🔐 Access Info
 

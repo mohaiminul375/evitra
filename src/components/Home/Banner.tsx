@@ -26,13 +26,13 @@ const Banner = () => {
                     Your Events, Your Way Manage, Host & Join with Ease.
                 </p>
                 <div className="flex gap-4 flex-wrap justify-center">
-                    <Link href="/create-event">
-                       <Button className="" variant='default'>Create Event</Button>
+                    <Link href="/add-event">
+                        <Button className="" variant='default'>Create Event</Button>
                     </Link>
-                    <Link className="dark:border rounded-md border-white" href="/create-event">
-                       <Button  variant='outline'>Explore Events</Button>
+                    <Link className="dark:border rounded-md text-foreground dark:text-white border-white" href="/events">
+                        <Button variant='outline'>Explore Events</Button>
                     </Link>
-                    
+
                 </div>
             </div>
         </div>

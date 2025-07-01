@@ -27,7 +27,7 @@ const Footer = () => {
                     <div>
                         <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
                         <ul className="space-y-2">
-                            <li><Link href="/" className="hover:text-gray-300 transition-colors">Events</Link></li>
+                            <li><Link href="/events" className="hover:text-gray-300 transition-colors">Events</Link></li>
                             <li><Link href="/add-event" className="hover:text-gray-300 transition-colors">Add Events</Link></li>
                             <li><Link href="/my-event" className="hover:text-gray-300 transition-colors">My Events</Link></li>
                             <li><Link href="/contact" className="hover:text-gray-300 transition-colors"></Link></li>
@@ -58,7 +58,7 @@ const Footer = () => {
                             Mohaiminul Islam
                         </Link>
                     </p>
-                    <p> Last Update: 1-July-2025, 8:15 P.M (BDT)</p>
+                    <p> Last Update: 1-July-2025, 11:42 P.M (BDT)</p>
                 </div>
 
             </div>
