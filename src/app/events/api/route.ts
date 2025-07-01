@@ -69,6 +69,7 @@ export const useJoinEvent = () => {
                 queryClient.invalidateQueries({ queryKey: ['all-event-user'] })
                 queryClient.invalidateQueries({ queryKey: ['all-join-event'] })
                 queryClient.invalidateQueries({ queryKey: ['participants-list'] })
+                queryClient.invalidateQueries({ queryKey: ['all-participants'] })
             }
         }, onError: (error) => {
             //error.response.data.message

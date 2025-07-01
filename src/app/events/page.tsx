@@ -9,15 +9,19 @@ import { Search } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
 import { FaFilterCircleXmark } from "react-icons/fa6";
-import Head from "next/head";
-// export const generateMetadata = async () => {
-//     return {
-//         title: 'Events Page'
-//     }
-// }
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination"
 const Events = () => {
     const [todayDate, setTodayDate] = useState('');
     const [dateRange, setDateRange] = useState('')
+    const [page, setPage] = useState(1);
     // handle search
     const [search, setSearch] = useState<string>('')
     const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
@@ -34,12 +38,18 @@ const Events = () => {
         setDateRange('')
         setTodayDate('')
     }
+    // Pagination
+    const itemsPerPage = 9;
+    const totalPages = Math.ceil(events.length / itemsPerPage);
+    // Get products for the current page
+    const paginatedEvents = events.slice((page - 1) * itemsPerPage, page * itemsPerPage);
+
     return (
         <section>
             <head>
                 <title>All Events | Evitra</title>
             </head>
-                {/* <meta name="description" content='' /> */}
+            {/* <meta name="description" content='' /> */}
 
             {/* Heading */}
             <div className='text-center'>
@@ -88,12 +98,58 @@ const Events = () => {
             {/* Data */}
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 p-4">
                 {
-                    events?.map((event) => (
+                    paginatedEvents?.map((event) => (
                         <EventCard key={event._id} event={event} />
                     ))
                 }
             </div>
+            {/* AI gpt */}
+            <Pagination className="mt-8">
+                <PaginationContent>
+                    {/* Previous */}
+                    <PaginationItem>
+                        <PaginationPrevious
+                            href="#"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                if (page > 1) setPage(page - 1);
+                            }}
+                            className={page === 1 ? "cursor-not-allowed opacity-50" : ""}
+                        />
+                    </PaginationItem>
 
+                    {/* Page numbers */}
+                    {[...Array(totalPages)].map((_, idx) => {
+                        const pageNum = idx + 1;
+                        return (
+                            <PaginationItem key={pageNum}>
+                                <PaginationLink
+                                    href="#"
+                                    isActive={page === pageNum}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setPage(pageNum);
+                                    }}
+                                >
+                                    {pageNum}
+                                </PaginationLink>
+                            </PaginationItem>
+                        );
+                    })}
+
+                    {/* Next */}
+                    <PaginationItem>
+                        <PaginationNext
+                            href="#"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                if (page < totalPages) setPage(page + 1);
+                            }}
+                            className={page === totalPages ? "cursor-not-allowed opacity-50" : ""}
+                        />
+                    </PaginationItem>
+                </PaginationContent>
+            </Pagination>
         </section>
     );
 };

@@ -38,6 +38,7 @@ export const useGetUserEvents = ({ email }: ParamsProp) => {
 
     return { data, isPending, isError, error }
 }
+
 // updateTodo
 export const useUpdateEvent = () => {
     const queryClient = useQueryClient();

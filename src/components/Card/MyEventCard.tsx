@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { useState } from "react";
 import UpdateEvent from "../Update/UpdateEvent";
 import { Badge } from "../ui/badge";
+import Link from "next/link";
 interface Event {
     _id: string,
     event_title: string,
@@ -85,36 +86,35 @@ const MyEventCard = ({ event }: EventProp) => {
 
             {/* Date & Time */}
             <p className="text-sm mt-1 flex items-center gap-2">
-                <IoTimeSharp className="text-lg text-gray-700 dark:text-white" />
-                <span><strong>Date & Time:</strong> {new Date(event_Date).toLocaleString()}</span>
+                <IoTimeSharp className="text-lg dark:text-white" />
+                <span><strong>Date & Time:</strong> <span className="font-semibold">{new Date(event_Date).toLocaleString()}</span></span>
             </p>
 
             {/* Location */}
             <p className="text-sm mt-1 flex items-center gap-2">
                 <MdLocationOn className="text-lg text-gray-700 dark:text-white" />
-                <span><strong>Location:</strong> {location}</span>
+                <span><strong>Location:</strong> <span className="font-semibold">{location}</span></span>
             </p>
 
             {/* Contact */}
             <p className="text-sm mt-1 flex items-center gap-2">
                 <FaPhone className="text-base text-gray-700 dark:text-white" />
-                <span><strong>Contact:</strong> {contact}</span>
+                <span><strong>Contact: </strong><span className="font-semibold">{contact}</span> </span>
             </p>
 
             {/* Description */}
-            <p className="text-gray-700 mt-2 dark:text-white text-sm">
+            <p className="text-gray-700 mt-2 dark:text-white text-sm font-semibold">
                 {description.slice(0, 90)}...
             </p>
 
             {/* Attendees */}
             <p className="text-sm text-gray-500 mt-1 flex items-center gap-2 dark:text-white">
                 <FaUserGroup className="text-lg" />
-                <span><strong>Attendees:</strong> {attendeeCount}</span>
+                <span><strong>Attendees:</strong> <span className="font-semibold">{attendeeCount}</span></span>
             </p>
 
             {/* Spacer */}
             <div className="flex-grow"></div>
-
             <div className="flex justify-between mt-4">
                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                     <DialogTrigger asChild>
@@ -132,8 +132,7 @@ const MyEventCard = ({ event }: EventProp) => {
                         <UpdateEvent event={event}></UpdateEvent>
                     </DialogContent>
                 </Dialog>
-
-                <Button variant='default' >Attendee List</Button>
+                <Link href={`/attendance/${_id}`}><Button variant='default' >Attendee List</Button></Link>
                 <Button onClick={() => handleDeleteEvent(_id)} className="text-base text-red-700" variant='default' ><FaTrash /> Delete</Button>
             </div>
         </div>
