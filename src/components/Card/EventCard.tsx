@@ -5,7 +5,7 @@ import { FaPhone, FaUserGroup } from "react-icons/fa6";
 import { Button } from "../ui/button";
 import { useAuth } from "@/Provider/AuthProvider";
 import { confirmAlert } from "react-confirm-alert";
-import { useGetJoinData, useJoinEvent } from "@/app/events/api/route";
+import { useGetJoinData, useJoinCancel, useJoinEvent } from "@/app/events/api/route";
 import Loading from "@/app/loading";
 import { Badge } from "../ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
@@ -29,8 +29,9 @@ const EventCard = ({ event }: EventProp) => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const { user } = useAuth();
     const { data: participants, isPending } = useGetJoinData(user?.email as string);
-    const { mutateAsync } = useJoinEvent()
     const { _id, event_title, name, email, event_Date, location, description, contact, attendeeCount } = event;
+    const { mutateAsync } = useJoinEvent()
+    const { mutateAsync: cancelJoin } = useJoinCancel(_id)
     const currentDate = new Date().toISOString()
     if (isPending) {
         return <Loading />
@@ -40,6 +41,7 @@ const EventCard = ({ event }: EventProp) => {
     // console.log(isJoined)
 
     const isExpired = currentDate > event_Date
+    // join event
     const handleJoinEvent = (id: string) => {
         const joinReq = {
             name: user?.name,
@@ -66,6 +68,40 @@ const EventCard = ({ event }: EventProp) => {
                                     className="bg-foreground cursor-pointer text-white px-4 py-2 rounded-md text-sm font-medium"
                                 >
                                     Yes, Join
+                                </button>
+                                <button
+                                    onClick={onClose}
+                                    className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-md text-sm font-medium"
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            },
+        });
+    }
+    const handleCancelEvent = () => {
+        confirmAlert({
+            customUI: ({ onClose }) => {
+                return (
+                    <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+                        <div className="bg-white rounded-xl p-6 w-full max-w-sm text-center shadow-xl">
+                            <h2 className="text-xl font-bold text-gray-800 mb-2">Are you sure?</h2>
+                            <p className="text-sm text-gray-600 mb-4">
+                                Do you really want to cancel join event
+                            </p>
+
+                            <div className="flex justify-center gap-4">
+                                <button
+                                    onClick={async () => {
+                                        await cancelJoin()
+                                        onClose();
+                                    }}
+                                    className="bg-red-700 cursor-pointer text-white px-4 py-2 rounded-md text-sm font-medium"
+                                >
+                                    Yes, Cancel
                                 </button>
                                 <button
                                     onClick={onClose}
@@ -131,14 +167,20 @@ const EventCard = ({ event }: EventProp) => {
 
             {/* Action Buttons */}
             <div className="flex justify-between items-center gap-3 mt-4">
-                <Button
+                {!isJoined ? <Button
                     className="disabled:cursor-not-allowed"
                     disabled={isJoined || isExpired}
                     onClick={() => handleJoinEvent(_id)}
                     variant="default"
                 >
                     {isJoined ? "Joined" : "Join Event"}
-                </Button>
+                </Button> : <Button
+                    disabled={isExpired}
+                    className="bg-red-700"
+                    onClick={() => handleCancelEvent()}
+                    variant="default"
+                >Cancel Join</Button>}
+
                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                     <DialogTrigger asChild>
                         <Button variant="outline">See More</Button>

@@ -87,3 +87,38 @@ export const useJoinEvent = () => {
     })
     return mutation;
 }
+// cancel Join Event
+export const useJoinCancel = (id: string) => {
+    const queryClient = useQueryClient();
+    const mutation = useMutation({
+        mutationFn: async () => {
+            const { data } = await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/participants/cancel-join/${id}`)
+            return data
+        },
+        mutationKey: ['cancel-join'],
+        onSuccess: (data) => {
+            console.log(data)
+            if (data.success === true) {
+                toast.success('Canceled join the event')
+                queryClient.invalidateQueries({ queryKey: ['all-event'] })
+                queryClient.invalidateQueries({ queryKey: ['all-event-user'] })
+                queryClient.invalidateQueries({ queryKey: ['all-join-event'] })
+                queryClient.invalidateQueries({ queryKey: ['participants-list'] })
+                queryClient.invalidateQueries({ queryKey: ['all-participants'] })
+            }
+        }, onError: (error) => {
+            //error.response.data.message
+            const axiosError = error as AxiosError<ApiErrorResponse>;
+            const existedError = axiosError?.response?.data?.message;
+            console.log(existedError)
+            if (existedError) {
+                toast.error(existedError)
+            } else if (error.message) {
+                toast.error(error.message)
+            } else {
+                toast.error('failed to cancel join')
+            }
+        },
+    })
+    return mutation;
+}

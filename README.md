@@ -1,6 +1,6 @@
 # Evitra
 এক্সপায়ার ইভেন্টে জয়েন হতে পারবে না।
-Desecnding pegination update profile
+Desecnding pegination update profile list
 - A Fully functional Event Management Web Application
 
 ## Overview:
