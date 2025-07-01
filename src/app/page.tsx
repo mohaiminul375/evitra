@@ -1,9 +1,12 @@
+import Banner from "@/components/Home/Banner";
+import HighLight from "@/components/Home/HighLight";
 
 
 export default function Home() {
   return (
-    <section>
-      <h2>Create home page</h2>
+    <section className="space-y-24">
+      <Banner />
+      <HighLight />
     </section>
   );
 }

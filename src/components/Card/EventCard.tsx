@@ -9,7 +9,6 @@ import { useGetJoinData, useJoinEvent } from "@/app/events/api/route";
 import Loading from "@/app/loading";
 import { Badge } from "../ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
-import UpdateEvent from "../Update/UpdateEvent";
 import { useState } from "react";
 import DetailEventCard from "./DetailEventCard";
 interface Event {
