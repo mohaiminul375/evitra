@@ -27,8 +27,10 @@ const MyEvent = () => {
                 </p>
             </div>
             {/* filter */}
-            <div className="my-8">
-
+            <div className="text-center flex justify-center">
+                {
+                    events?.length === 0 ? <p className="text-red-700 font-bold text-xl text-center">No Events Found or added yet</p> : ""
+                }
             </div>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 p-4">
                 {

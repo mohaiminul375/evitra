@@ -21,6 +21,11 @@ const LatestEvents = () => {
                     See our latest Event.
                 </p>
             </div>
+            <div className="text-center flex justify-center">
+                {
+                    events?.length === 0 ? <p className="text-red-700 font-bold text-xl text-center">No Events Found</p> : ""
+                }
+            </div>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 p-4">
                 {
                     events?.map(event => <DetailEventCard key={event._id} event={event} />)

@@ -24,6 +24,11 @@ const JoinedEvent = () => {
                     See all event you wanna join.
                 </p>
             </div>
+                  <div className="text-center flex justify-center">
+                {
+                    joined.length === 0 ? <p className="text-red-700 font-bold text-xl text-center">No Events Found or join any event yet</p> : ""
+                }
+            </div>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 p-4">
                 {
                     joined?.map(list => <JoinedEventCard key={list?.event_id._id} list={list} />)

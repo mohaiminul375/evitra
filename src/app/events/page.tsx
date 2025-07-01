@@ -43,7 +43,7 @@ const Events = () => {
     const totalPages = Math.ceil(events.length / itemsPerPage);
     // Get products for the current page
     const paginatedEvents = events.slice((page - 1) * itemsPerPage, page * itemsPerPage);
-
+    console.log(events.length)
     return (
         <section>
             <head>
@@ -96,6 +96,11 @@ const Events = () => {
                 </div>
             </div>
             {/* Data */}
+            <div className="text-center flex justify-center">
+                {
+                    paginatedEvents.length === 0 ? <p className="text-red-700 font-bold text-xl text-center">No Events Found</p> : ""
+                }
+            </div>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 p-4">
                 {
                     paginatedEvents?.map((event) => (
