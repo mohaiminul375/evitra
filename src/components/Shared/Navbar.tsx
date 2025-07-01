@@ -33,6 +33,10 @@ const navItems = [
     {
         title: 'My Event',
         path: '/my-event'
+    },
+    {
+        title: 'Joined Event',
+        path: '/joined-event'
     }
 ];
 const Navbar = () => {

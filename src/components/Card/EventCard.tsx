@@ -33,6 +33,7 @@ const EventCard = ({ event }: EventProp) => {
     const { mutateAsync } = useJoinEvent()
     const { mutateAsync: cancelJoin } = useJoinCancel(_id)
     const currentDate = new Date().toISOString()
+    const isExpired = currentDate > event_Date
     if (isPending) {
         return <Loading />
     }
@@ -40,7 +41,6 @@ const EventCard = ({ event }: EventProp) => {
     const isJoined = participants?.some((item) => item.event_id == _id);
     // console.log(isJoined)
 
-    const isExpired = currentDate > event_Date
     // join event
     const handleJoinEvent = (id: string) => {
         const joinReq = {
