@@ -109,10 +109,9 @@ const Events = () => {
                     {/* Previous */}
                     <PaginationItem>
                         <PaginationPrevious
-                            href="#"
                             onClick={(e) => {
                                 e.preventDefault();
-                                if (page > 1) setPage(page - 1);
+                                if (page > 1) setPage(page - 1); //for disabled less than1
                             }}
                             className={page === 1 ? "cursor-not-allowed opacity-50" : ""}
                         />
@@ -124,7 +123,6 @@ const Events = () => {
                         return (
                             <PaginationItem key={pageNum}>
                                 <PaginationLink
-                                    href="#"
                                     isActive={page === pageNum}
                                     onClick={(e) => {
                                         e.preventDefault();
@@ -143,7 +141,7 @@ const Events = () => {
                             href="#"
                             onClick={(e) => {
                                 e.preventDefault();
-                                if (page < totalPages) setPage(page + 1);
+                                if (page < totalPages) setPage(page + 1); //for disabled
                             }}
                             className={page === totalPages ? "cursor-not-allowed opacity-50" : ""}
                         />

@@ -116,8 +116,9 @@ const Navbar = () => {
                             </Avatar>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
-                            <DropdownMenuLabel className='cursor-default'>{user?.name}</DropdownMenuLabel>
-                            <DropdownMenuLabel className='cursor-default'>{user?.email}</DropdownMenuLabel>
+                            <DropdownMenuLabel className='select-none cursor-not-allowed'>{user?.name}</DropdownMenuLabel>
+                            <DropdownMenuLabel className='select-none cursor-not-allowed'>{user?.email}</DropdownMenuLabel>
+                            <DropdownMenuLabel className='cursor-pointer'><Link href='/update-profile'>Update Profile</Link></DropdownMenuLabel>
                             <DropdownMenuLabel className='cursor-pointer' onClick={logOut}>LogOut</DropdownMenuLabel>
                             <DropdownMenuSeparator />
                         </DropdownMenuContent>
