@@ -1,6 +1,14 @@
+'use client'
 
+import Loading from "@/app/loading";
+import { useGetHighlight } from "./api/route";
 
 const HighLight = () => {
+    const { data, isPending, isError, error } = useGetHighlight();
+    if (isPending) {
+        return <Loading />
+    }
+    if (isError) return <p>Error: {(error as Error)?.message || "Something went wrong!"}</p>;
     return (
         <div className="py-12 px-4">
             {/* Heading */}
@@ -18,19 +26,19 @@ const HighLight = () => {
                 {/* Card 1 */}
                 <div className="bg-primary text-white p-6 rounded-xl shadow-lg w-full max-w-xs hover:scale-105 transition-transform duration-300">
                     <h3 className="text-lg font-semibold mb-1">Total Users</h3>
-                    <p className="text-3xl font-bold">20</p>
+                    <p className="text-3xl font-bold">{data.userCount}</p>
                 </div>
 
                 {/* Card 2 */}
                 <div className="bg-foreground text-white p-6 rounded-xl shadow-lg w-full max-w-xs hover:scale-105 transition-transform duration-300">
                     <h3 className="text-lg font-semibold mb-1">Total Events</h3>
-                    <p className="text-3xl font-bold">45</p>
+                    <p className="text-3xl font-bold">{data.eventCount}</p>
                 </div>
 
                 {/* Card 3 */}
                 <div className="bg-white text-black p-6 rounded-xl shadow-lg w-full max-w-xs border border-gray-200 dark:border-gray-700 hover:scale-105 transition-transform duration-300">
                     <h3 className="text-lg font-semibold mb-1">Total Attendees</h3>
-                    <p className="text-3xl font-bold">350+</p>
+                    <p className="text-3xl font-bold">{data.attendeeCount}</p>
                 </div>
             </div>
         </div>

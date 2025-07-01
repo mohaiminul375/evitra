@@ -26,7 +26,7 @@ interface EventProp {
     event: Event,
 }
 const EventCard = ({ event }: EventProp) => {
-       const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
     const { user } = useAuth();
     const { data: participants, isPending } = useGetJoinData(user?.email as string);
     const { mutateAsync } = useJoinEvent()
@@ -81,7 +81,7 @@ const EventCard = ({ event }: EventProp) => {
         });
     }
     return (
-        <div className="relative bg-white dark:bg-primary-foreground dark:text-white p-6 rounded-xl shadow-md flex flex-col gap-2">
+        <div className="relative bg-white dark:bg-primary-foreground dark:text-white p-6 rounded-xl shadow-md flex flex-col gap-2 hover:scale-105 transition-transform duration-300">
             {/* status Badge */}
             <div className="flex justify-end">
                 <Badge variant={isExpired ? 'destructive' : "default"}>{isExpired ? 'expired' : 'active'}</Badge>
@@ -148,7 +148,7 @@ const EventCard = ({ event }: EventProp) => {
                         <DialogHeader className="text-primary text-center">
                             <DialogTitle className="text-center">Details of event</DialogTitle>
                         </DialogHeader>
-                        <DetailEventCard event={event}/>
+                        <DetailEventCard event={event} />
                     </DialogContent>
                 </Dialog>
 

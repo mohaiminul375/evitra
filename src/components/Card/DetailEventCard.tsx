@@ -2,8 +2,21 @@ import React from 'react';
 import { FaPhone, FaUserGroup } from 'react-icons/fa6';
 import { IoTimeSharp } from 'react-icons/io5';
 import { MdLocationOn, MdManageAccounts } from 'react-icons/md';
-
-const DetailEventCard = ({ event }) => {
+interface Event {
+    _id: string,
+    event_title: string,
+    name: string,
+    email: string,
+    event_Date: string,
+    location: string,
+    description: string,
+    contact: string,
+    attendeeCount: number,
+}
+interface EventProp {
+    event: Event,
+}
+const DetailEventCard = ({ event }: EventProp) => {
     const { event_title, name, email, event_Date, location, description, contact, attendeeCount } = event;
     return (
         <div className="relative bg-white dark:bg-primary-foreground dark:text-white p-6 rounded-xl shadow-md flex flex-col gap-2">

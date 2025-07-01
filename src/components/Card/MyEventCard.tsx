@@ -42,12 +42,10 @@ const MyEventCard = ({ event }: EventProp) => {
                             <p className="text-sm text-gray-600 mb-4">
                                 Do you really want to delete this event? This action cannot be undone.
                             </p>
-
                             <div className="flex justify-center gap-4">
                                 <button
                                     onClick={async () => {
                                         await mutateAsync(id)
-                                        // Your delete logic
                                         // deleteEvent(id);
                                         onClose();
                                     }}
@@ -69,7 +67,7 @@ const MyEventCard = ({ event }: EventProp) => {
         });
     }
     return (
-        <div className="relative bg-white dark:bg-primary-foreground dark:text-white p-6 rounded-xl shadow-md flex flex-col gap-2">
+        <div className="relative bg-white dark:bg-primary-foreground dark:text-white p-6 rounded-xl shadow-md flex flex-col gap-2 hover:scale-105 transition-transform duration-300">
             {/* status Badge */}
             <div className="flex justify-end">
                 <Badge variant={isExpired ? 'destructive' : "default"}>{isExpired ? 'expired' : 'active'}</Badge>
