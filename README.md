@@ -1,6 +1,5 @@
 # Evitra
-এক্সপায়ার ইভেন্টে জয়েন হতে পারবে না।
-Desecnding pegination update profile list
+
 - A Fully functional Event Management Web Application
 
 ## Overview:
@@ -40,7 +39,7 @@ npm run dev -- --host
 
 ### 1. Custom Authentication
 
-- User must log in for operation using custom JWT authentication
+- User must log in for operation using custom JWT authentication and password bcrypt
 
 ### 2. Home Page
 
@@ -52,19 +51,23 @@ npm run dev -- --host
 
 ### 4.All Event(Private Route)
 
-- Users can view all listed events with dynamic filtering by date range and real-time search functionality for quick and efficient browsing.
+- Users can view all listed events with `descending` dynamic filtering by date range and real-time search functionality for quick and efficient browsing.
+- Pagination for better user Experience
 
 ### 5.MY Events Page(Private Route)
 
 - On this page, users can see the events they've added and have the option to edit or delete their own events.
+- User can see participants list of his each event
 
 ### 5.Join Event
 
 - User can Join event through press join button and join an event only once.
+- if event already expired user can't join
+- User can cancel event join
 
-<!-- ### 6.Update Profile
+### 6.Update Profile
 
-- User can update their profile only name and image -->
+- User can update their profile only name and image
 
 # 🔐 Access Info
 

@@ -24,7 +24,7 @@ const HighLight = () => {
             {/* Stats Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-items-center">
                 {/* Card 1 */}
-                <div className="bg-primary text-white p-6 rounded-xl shadow-lg w-full max-w-xs hover:scale-105 transition-transform duration-300">
+                <div className="bg-primary text-white dark:text-black p-6 rounded-xl shadow-lg w-full max-w-xs hover:scale-105 transition-transform duration-300">
                     <h3 className="text-lg font-semibold mb-1">Total Users</h3>
                     <p className="text-3xl font-bold">{data.userCount}</p>
                 </div>
