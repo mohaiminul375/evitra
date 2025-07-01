@@ -90,7 +90,7 @@ const Register = () => {
     return (
         <section className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6 px-4 lg:px-16 items-center">
             <head>
-                <title>Evitra | Register</title>
+                <title>Register | Evitra</title>
             </head>
             {/* Left side: Animation */}
             <div className="hidden md:flex justify-center">

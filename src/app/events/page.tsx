@@ -9,7 +9,12 @@ import { Search } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
 import { FaFilterCircleXmark } from "react-icons/fa6";
-
+import Head from "next/head";
+// export const generateMetadata = async () => {
+//     return {
+//         title: 'Events Page'
+//     }
+// }
 const Events = () => {
     const [todayDate, setTodayDate] = useState('');
     const [dateRange, setDateRange] = useState('')
@@ -31,6 +36,11 @@ const Events = () => {
     }
     return (
         <section>
+            <head>
+                <title>All Events | Evitra</title>
+            </head>
+                {/* <meta name="description" content='' /> */}
+
             {/* Heading */}
             <div className='text-center'>
                 <h2 className='text-3xl font-semibold dark:text-white'>All Events</h2>

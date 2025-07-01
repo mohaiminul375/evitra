@@ -9,6 +9,7 @@ import { SyncLoader } from "react-spinners";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { useState } from "react";
 import UpdateEvent from "../Update/UpdateEvent";
+import { Badge } from "../ui/badge";
 interface Event {
     _id: string,
     event_title: string,
@@ -27,6 +28,8 @@ const MyEventCard = ({ event }: EventProp) => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const { mutateAsync, isPending } = useDeleteEvent()
     const { _id, event_title, name, email, event_Date, location, description, contact, attendeeCount } = event;
+    const currentDate = new Date().toISOString()
+    const isExpired = currentDate > event_Date;
     // handle delete
     const handleDeleteEvent = async (id: string) => {
         // react confirm alert customization
@@ -66,36 +69,52 @@ const MyEventCard = ({ event }: EventProp) => {
         });
     }
     return (
-        <div className="bg-white dark:bg-primary-foreground dark:text-white p-5 rounded-xl shadow-md flex flex-col">
+        <div className="relative bg-white dark:bg-primary-foreground dark:text-white p-6 rounded-xl shadow-md flex flex-col gap-2">
+            {/* status Badge */}
+            <div className="flex justify-end">
+                <Badge variant={isExpired ? 'destructive' : "default"}>{isExpired ? 'expired' : 'active'}</Badge>
+            </div>
+
             <h3 className="text-xl font-bold text-gray-800 dark:text-white">{event_title}</h3>
-            <p className="text-sm text-gray-600 mt-2 dark:text-white">
-                <span className="flex items-center gap-1 mb-1">
-                    <MdManageAccounts className="text-xl" />
-                    <strong>Posted by:</strong> {name}
+
+            {/* Organizer */}
+            <p className="text-sm text-gray-600 mt-1 dark:text-white flex items-center gap-2">
+                <MdManageAccounts className="text-lg" />
+                <span>
+                    <strong>Posted by:</strong> {name} (<span className="text-primary">{email}</span>)
                 </span>
-                (<span className="text-primary">{email}</span>)
             </p>
 
-            <p className="text-sm mt-3 flex items-center gap-2">
-                <IoTimeSharp className="text-xl" /><strong>Date & Time:</strong> {new Date(event_Date).toLocaleString()}
-            </p>
-
+            {/* Date & Time */}
             <p className="text-sm mt-1 flex items-center gap-2">
-                <MdLocationOn className="text-xl" /> <strong>Location:</strong> {location}
-            </p>
-            <p className="text-sm mt-1 flex items-center gap-2">
-                <FaPhone className="text-sm" /> <strong>Contact:</strong> {contact}
+                <IoTimeSharp className="text-lg text-gray-700 dark:text-white" />
+                <span><strong>Date & Time:</strong> {new Date(event_Date).toLocaleString()}</span>
             </p>
 
-            <p className="text-gray-700 mt-2 dark:text-white">
+            {/* Location */}
+            <p className="text-sm mt-1 flex items-center gap-2">
+                <MdLocationOn className="text-lg text-gray-700 dark:text-white" />
+                <span><strong>Location:</strong> {location}</span>
+            </p>
+
+            {/* Contact */}
+            <p className="text-sm mt-1 flex items-center gap-2">
+                <FaPhone className="text-base text-gray-700 dark:text-white" />
+                <span><strong>Contact:</strong> {contact}</span>
+            </p>
+
+            {/* Description */}
+            <p className="text-gray-700 mt-2 dark:text-white text-sm">
                 {description.slice(0, 90)}...
             </p>
 
+            {/* Attendees */}
             <p className="text-sm text-gray-500 mt-1 flex items-center gap-2 dark:text-white">
-                <FaUserGroup className="text-xl" />   <strong>Attendees:</strong> {attendeeCount}
+                <FaUserGroup className="text-lg" />
+                <span><strong>Attendees:</strong> {attendeeCount}</span>
             </p>
 
-            {/* Spacer to push buttons to bottom */}
+            {/* Spacer */}
             <div className="flex-grow"></div>
 
             <div className="flex justify-between mt-4">

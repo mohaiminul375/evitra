@@ -7,6 +7,11 @@ import { useAuth } from "@/Provider/AuthProvider";
 import { confirmAlert } from "react-confirm-alert";
 import { useGetJoinData, useJoinEvent } from "@/app/events/api/route";
 import Loading from "@/app/loading";
+import { Badge } from "../ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import UpdateEvent from "../Update/UpdateEvent";
+import { useState } from "react";
+import DetailEventCard from "./DetailEventCard";
 interface Event {
     _id: string,
     event_title: string,
@@ -22,17 +27,20 @@ interface EventProp {
     event: Event,
 }
 const EventCard = ({ event }: EventProp) => {
+       const [isDialogOpen, setIsDialogOpen] = useState(false);
     const { user } = useAuth();
     const { data: participants, isPending } = useGetJoinData(user?.email as string);
     const { mutateAsync } = useJoinEvent()
     const { _id, event_title, name, email, event_Date, location, description, contact, attendeeCount } = event;
+    const currentDate = new Date().toISOString()
     if (isPending) {
         return <Loading />
     }
     // console.log(participants)
     const isJoined = participants?.some((item) => item.event_id == _id);
-    console.log(isJoined)
+    // console.log(isJoined)
 
+    const isExpired = currentDate > event_Date
     const handleJoinEvent = (id: string) => {
         const joinReq = {
             name: user?.name,
@@ -74,44 +82,80 @@ const EventCard = ({ event }: EventProp) => {
         });
     }
     return (
-        <div className="bg-white dark:bg-primary-foreground dark:text-white p-5 rounded-xl shadow-md flex flex-col">
+        <div className="relative bg-white dark:bg-primary-foreground dark:text-white p-6 rounded-xl shadow-md flex flex-col gap-2">
+            {/* status Badge */}
+            <div className="flex justify-end">
+                <Badge variant={isExpired ? 'destructive' : "default"}>{isExpired ? 'expired' : 'active'}</Badge>
+            </div>
+
             <h3 className="text-xl font-bold text-gray-800 dark:text-white">{event_title}</h3>
-            <p className="text-sm text-gray-600 mt-2 dark:text-white">
-                <span className="flex items-center gap-1 mb-1">
-                    <MdManageAccounts className="text-xl" />
-                    <strong>Posted by:</strong> {name}
+
+            {/* Organizer */}
+            <p className="text-sm text-gray-600 mt-1 dark:text-white flex items-center gap-2">
+                <MdManageAccounts className="text-lg" />
+                <span>
+                    <strong>Posted by:</strong> {name} (<span className="text-primary">{email}</span>)
                 </span>
-                (<span className="text-primary">{email}</span>)
             </p>
 
-            <p className="text-sm mt-2 flex items-center gap-2">
-                <IoTimeSharp className="text-xl" /><strong>Date & Time:</strong> {new Date(event_Date).toLocaleString()}
-            </p>
-
+            {/* Date & Time */}
             <p className="text-sm mt-1 flex items-center gap-2">
-                <MdLocationOn className="text-xl" /> <strong>Location:</strong> {location}
-            </p>
-            <p className="text-sm mt-1 flex items-center gap-2">
-                <FaPhone className="text-sm" /> <strong>Contact:</strong> {contact}
+                <IoTimeSharp className="text-lg text-gray-700 dark:text-white" />
+                <span><strong>Date & Time:</strong> {new Date(event_Date).toLocaleString()}</span>
             </p>
 
-            <p className="text-gray-700 mt-2 dark:text-white">
+            {/* Location */}
+            <p className="text-sm mt-1 flex items-center gap-2">
+                <MdLocationOn className="text-lg text-gray-700 dark:text-white" />
+                <span><strong>Location:</strong> {location}</span>
+            </p>
+
+            {/* Contact */}
+            <p className="text-sm mt-1 flex items-center gap-2">
+                <FaPhone className="text-base text-gray-700 dark:text-white" />
+                <span><strong>Contact:</strong> {contact}</span>
+            </p>
+
+            {/* Description */}
+            <p className="text-gray-700 mt-2 dark:text-white text-sm">
                 {description.slice(0, 90)}...
             </p>
 
+            {/* Attendees */}
             <p className="text-sm text-gray-500 mt-1 flex items-center gap-2 dark:text-white">
-                <FaUserGroup className="text-xl" />   <strong>Attendees:</strong> {attendeeCount}
+                <FaUserGroup className="text-lg" />
+                <span><strong>Attendees:</strong> {attendeeCount}</span>
             </p>
 
-            {/* Spacer to push buttons to bottom */}
+            {/* Spacer */}
             <div className="flex-grow"></div>
 
-            <div className="flex justify-between mt-4">
-                <Button className="disabled:ursor-not-allowed" disabled={isJoined} onClick={() => handleJoinEvent(_id)} variant='default' >Join Event</Button>
-                <Button variant='default' >See More</Button>
-                {/* <button className="text-sm text-blue-600 hover:underline">See More</button> */}
+            {/* Action Buttons */}
+            <div className="flex justify-between items-center gap-3 mt-4">
+                <Button
+                    className="disabled:cursor-not-allowed"
+                    disabled={isJoined || isExpired}
+                    onClick={() => handleJoinEvent(_id)}
+                    variant="default"
+                >
+                    {isJoined ? "Joined" : "Join Event"}
+                </Button>
+                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                    <DialogTrigger asChild>
+                        <Button variant="outline">See More</Button>
+
+                    </DialogTrigger>
+                    <DialogContent className="md:max-w-4xl bg-white dark:bg-background dark:text-white">
+                        <DialogHeader className="text-primary text-center">
+                            <DialogTitle className="text-center">Details of event</DialogTitle>
+                        </DialogHeader>
+                        <DetailEventCard event={event}/>
+                    </DialogContent>
+                </Dialog>
+
             </div>
-        </div>
+        </div >
+
     );
 };
 

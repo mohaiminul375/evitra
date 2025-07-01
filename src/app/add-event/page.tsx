@@ -12,6 +12,7 @@ import { useAuth } from "@/Provider/AuthProvider";
 import { useCreateEvent } from "./api/route";
 import { SyncLoader } from "react-spinners";
 import { useRouter } from "next/navigation";
+import Loading from "../loading";
 type Inputs = {
     event_title: string,
     name: string,
@@ -23,6 +24,12 @@ type Inputs = {
     priority: string | undefined,
 }
 const AddEvent = () => {
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm<Inputs>();
     const router = useRouter()
     const { mutateAsync, isPending, } = useCreateEvent();
     const { user, loading } = useAuth()
@@ -36,16 +43,16 @@ const AddEvent = () => {
     ];
     // secure path Private route
     useEffect(() => {
+        <Loading />
         if (!loading && !user) {
             router.push('/login');
         }
     }, [user, loading, router]);
-    const {
-        register,
-        handleSubmit,
-        reset,
-        formState: { errors },
-    } = useForm<Inputs>()
+    // load form auth
+    if (loading) {
+        <Loading />
+    }
+    // react hook form
     const onSubmit: SubmitHandler<Inputs> = async (event_data) => {
         event_data.event_Date = selectedDateTime?.toISOString() as string;
         event_data.email = user?.email;
@@ -58,6 +65,9 @@ const AddEvent = () => {
     }
     return (
         <section>
+            <head>
+                <title>Add Event | Evitra</title>
+            </head>
             <div className='border-2 border-black rounded-md md:max-w-3xl mx-auto py-10 p-6 bg-foreground'>
                 {/* Heading */}
                 <div className='text-center text-white'>

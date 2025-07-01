@@ -13,9 +13,11 @@ const MyEvent = () => {
         return <Loading />
     }
     if (isError) return <p>Error: {(error as Error)?.message || "Something went wrong!"}</p>;
-    // console.log(events)
     return (
         <section>
+            <head>
+                <title>My Event | Evitra</title>
+            </head>
             {/* Heading */}
             <div className='text-center'>
                 <h2 className='text-3xl font-semibold dark:text-white'>My Events</h2>

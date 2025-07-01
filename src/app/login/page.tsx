@@ -31,7 +31,7 @@ const Login = () => {
     return (
         <section className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6 px-4 lg:px-16 items-center">
             <head>
-                <title>ZenTask Kanban | Login</title>
+                <title>Login | Evitra</title>
             </head>
             {/* Left side: Animation */}
             <div className="hidden md:flex justify-center">
